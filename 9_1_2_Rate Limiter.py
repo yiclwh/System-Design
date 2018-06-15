@@ -46,20 +46,21 @@ class Solution:
             time = time * 60 * 60
         elif type == 'd':
             time = time * 60 * 60 * 24
+        # 通过rate 算出要找的区间
         last_time = timestamp - time + 1
         
         if event not in self.mp:
             self.mp[event] = []
-
+        # 再去区间内找到这个区间内的时间比这个timestamp大的个数
         rt = self.find_event(self.mp[event], last_time) >= total_time
         if increment and not rt:
             self.insert_event(self.mp[event], timestamp)
-
         return rt
 
     def insert_event(self, event, timestamp):
         event.append(timestamp)
 
+    # 去所有的timestamp里面找，用binary search
     def find_event(self, event, last_time):
         l, r = 0, len(event) - 1
         if r < 0 or event[r] < last_time:
@@ -68,6 +69,7 @@ class Solution:
         ans = 0
         while l <=r:
             mid = (l + r) >> 1
+            # 大于表示比last time还晚
             if event[mid] >= last_time:
                 ans = mid
                 r = mid - 1
