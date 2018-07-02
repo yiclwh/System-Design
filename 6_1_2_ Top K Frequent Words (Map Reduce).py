@@ -1,3 +1,30 @@
+# quick select top K
+
+def getTopK(nums, K):
+    selectTopK(nums, K, 0, len(nums)-1)
+    return nums[:K]
+
+def selectTopK(nums, K, start, end):
+    if not nums or len(nums) <= K:
+        return nums
+    i = j = start
+    p = nums[end]
+    while i < end:
+        if nums[i] < p:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+            j += 1
+        else:
+            i += 1
+    nums[j], num[end] = nums[end], nums[j]
+    length = j- start + 1
+    if length == K:
+        return
+    elif length < K:
+        getTopK(nums, K-length, j + 1, end)
+    else:
+        getTopK(nums, K, start, j - 1)
+
 """
 Find top k frequent words with map reduce framework.
 
